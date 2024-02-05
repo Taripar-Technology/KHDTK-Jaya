@@ -12,7 +12,6 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\SensorController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\DroneController;
-use App\Http\Controllers\PetaController;
 use App\Http\Controllers\CabaiController;
 use App\Http\Controllers\hasilAdminController;
 use App\Http\Controllers\SensorAdminController;
@@ -222,31 +221,6 @@ Route::get('/drone/create', [DroneController::class, 'index'])->name('createdron
 Route::middleware('auth')->group(function () {
 	Route::resource('drones', DroneController::class);
 });
-
-
-Route::middleware(['auth'])->group(function () {
-	Route::get('/petas/create', [PetaController::class, 'create'])->name('petas.create');
-	Route::post('/petas', [PetaController::class, 'store'])->name('petas.store');
-});;
-
-Route::resource('petas', PetaController::class);
-Route::get('/petas', [PetaController::class, 'index'])->name('petas');
-
-Route::get('/peta/index', [PetaController::class, 'index'])->name('petas');
-
-Route::get('/peta/create', [PetaController::class, 'index'])->name('createpetas');
-Route::middleware('auth')->group(function () {
-	Route::resource('petas', PetaController::class);
-});
-
-
-
-
-
-
-
-
-
 Route::post('/sop/update-status/{id}', [SopController::class, 'updateStatus'])->name('sop.updateStatus');
 
     Route::get('sop', function () {

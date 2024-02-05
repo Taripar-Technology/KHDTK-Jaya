@@ -145,7 +145,7 @@
                     @include('layouts.footers.auth.footer')
                 </div>
             </main>
-        @elseif (\Request::is('persediaan*'))
+        @elseif (\Request::is('persediaan'))
             @include('layouts.navbars.admin.sidebar')
             <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg overflow-hidden">
                 @include('layouts.navbars.auth.nav')
@@ -154,7 +154,7 @@
                     @include('layouts.footers.auth.footer')
                 </div>
             </main>
-        @elseif (\Request::is('uploads*'))
+            @elseif (\Request::is('uploads*'))  
             @include('layouts.navbars.admin.sidebar')
             <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg overflow-hidden">
                 @include('layouts.navbars.auth.nav')
@@ -163,7 +163,7 @@
                     @include('layouts.footers.auth.footer')
                 </div>
             </main>
-        @elseif (\Request::is('drones*'))
+            @elseif (\Request::is('drones*'))  
             @include('layouts.navbars.admin.sidebar')
             <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg overflow-hidden">
                 @include('layouts.navbars.auth.nav')
@@ -172,16 +172,6 @@
                     @include('layouts.footers.auth.footer')
                 </div>
             </main>
-        @elseif (\Request::is('petas*'))
-            @include('layouts.navbars.admin.sidebar')
-            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg overflow-hidden">
-                @include('layouts.navbars.auth.nav')
-                <div class="container-fluid py-4">
-                    @yield('content')
-                    @include('layouts.footers.auth.footer')
-                </div>
-            </main>
-        @elseif (\Request::is('user-management*'))
             @elseif (\Request::is('user-management*'))
             @include('layouts.navbars.admin.sidebar')
             <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg overflow-hidden">
@@ -191,7 +181,7 @@
                     @include('layouts.footers.auth.footer')
                 </div>
             </main>
-        @elseif (\Request::is('hasil-admin*'))
+            @elseif (\Request::is('hasil-admin*'))
             @include('layouts.navbars.admin.sidebar')
             <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg overflow-hidden">
                 @include('layouts.navbars.auth.nav')
@@ -200,7 +190,7 @@
                     @include('layouts.footers.auth.footer')
                 </div>
             </main>
-        @elseif (\Request::is('sensor-admin*'))
+            @elseif (\Request::is('sensor-admin*'))
             @include('layouts.navbars.admin.sidebar')
             <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg overflow-hidden">
                 @include('layouts.navbars.auth.nav')

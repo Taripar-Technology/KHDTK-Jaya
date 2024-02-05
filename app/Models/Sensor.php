@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Sensor extends Model
 {
     use HasFactory;
+<<<<<<< Updated upstream
+
     protected $guarded = ['id'];
 
     // Sensor model
@@ -15,4 +17,6 @@ class Sensor extends Model
     {
         return $this->belongsTo(User::class);
     }
+=======
+>>>>>>> Stashed changes
 }
