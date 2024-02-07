@@ -20,7 +20,8 @@ RUN npm run production
 FROM php:8.0-apache as phpbuilder
 
 # Install ekstensi PHP yang dibutuhkan oleh Laravel
-RUN docker-php-ext-install pdo pdo_mysql
+RUN apt-get update && apt-get install -y libpng-dev libonig-dev libxml2-dev zip unzip
+RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
 
 # Aktifkan modul rewrite Apache
 RUN a2enmod rewrite

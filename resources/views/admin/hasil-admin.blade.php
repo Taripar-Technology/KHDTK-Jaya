@@ -75,18 +75,20 @@
 
                                     <td class="text-center horizontal-icons">
                                         <a href="{{ url('detail/' . $kalkulator->id . '?komoditas=' . $kalkulator->komoditas) }}" class="icon-link" data-bs-toggle="tooltip" data-bs-original-title="View Detail">
-                                            <i class="fas fa-user-edit text-bold"></i>
+                                            <i class="fas fa-eye text-bold"></i>
                                         </a>
-                                        <a href="{{ url('sop/' . $kalkulator->id . '?komoditas=' . $kalkulator->komoditas) }}" class="icon-link" data-bs-toggle="tooltip" data-bs-original-title="View SOP">
 
-                                            <i class="fas fa-user-edit text-bold"></i>
+                                        <a href="{{ url('sop/' . $kalkulator->id . '?komoditas=' . $kalkulator->komoditas) }}" class="icon-link" data-bs-toggle="tooltip" data-bs-original-title="View SOP">
+                                            <i class="fas fa-tasks text-bold"></i>
                                         </a>
+
                                         <form action="{{ route('kalkulators.destroy', $kalkulator->id) }}" method="POST" class="icon-link">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="cursor-pointer fas fa-trash text-bold">
+                                            <button type="submit" class="cursor-pointer fas fa-trash text-bold" style="border: none; background: none;">
                                             </button>
                                         </form>
+
                                     </td>
                                     <td class="text-center">
                                         {{ $kalkulator->user ? $kalkulator->user->name : 'Tidak diketahui' }}
@@ -109,8 +111,8 @@
 </div>
 {{-- Tempatkan pagination di bawah tabel --}}
 <div class="pagination-container">
-   {{-- Pagination links --}}
-{{ $Kalkulators->links() }} 
+    {{-- Pagination links --}}
+    {{ $Kalkulators->links() }}
 </div>
 
 <style>
@@ -187,7 +189,8 @@
     .icon-link {
         margin: 0 5px;
     }
-     /* Style tambahan untuk pagination */
+
+    /* Style tambahan untuk pagination */
     .pagination-container {
         text-align: center;
         margin-top: 20px;

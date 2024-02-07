@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\SensorLog;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Upload;
 use Illuminate\Http\Response;
 use App\Models\Drone;
@@ -22,34 +24,30 @@ class HomeController extends Controller
         // Ambil data gambar yang diurutkan berdasarkan created_at
         // $drones = Drone::orderBy('created_at', 'desc')->get();
 
+        Carbon::setLocale('id');
+        date_default_timezone_set('Asia/Jakarta');
+        $currentTime = Carbon::now();
+        
+        $latestEntries = SensorLog::select('sensor_id', DB::raw('MAX(updated_at) as last_update'))
+        ->whereHas('sensor', function ($query) {
+            $query->where('user_id', Auth::id());
+        })
+        ->groupBy('sensor_id')
+        ->get()
+        ->keyBy('sensor_id');
+
+
+        $sensors = SensorLog::whereHas('sensor', function ($query) {
+            $query->where('user_id', Auth::id());
+        })
+        ->orderBy('created_at', 'asc')
+        ->get();
+
         $sensorStatus = [];
-        $currentTime = now();
 
-        $i = 1;
-        while (true) {
-            // Mengambil data terakhir dari setiap sensor.
-            $tableName = "sensor{$i}";
-            // Check if the table exists
-            $tableExists = Schema::hasTable($tableName);
-
-            if (!$tableExists) {
-                // If the table does not exist, break out of the loop
-                break;
-            }
-            $lastDataPoint = DB::table($tableName)
-                ->latest('Tanggal')
-                ->first();
-
-            if ($lastDataPoint) {
-                $lastDataTime = Carbon::parse($lastDataPoint->Tanggal);
-                // Menentukan status sensor berdasarkan waktu terakhir data diterima.
-                $sensorStatus[$tableName] = $lastDataTime->diffInHours($currentTime, false) <= 3 ? 'Aktif' : 'Tidak Aktif';
-            } else {
-                // Jika tidak ada data, tandai sensor sebagai tidak aktif.
-                $sensorStatus[$tableName] = 'Tidak Aktif';
-            }
-
-            $i++;
+        foreach ($latestEntries as $sensor_id => $entry) {
+            $lastUpdateTime = Carbon::parse($entry->last_update);
+            $sensorStatus[$sensor_id] = $lastUpdateTime->diffInHours($currentTime) <= 3 ? 'active' : 'inactive';
         }
 
         if (auth()->user()->role === 'admin') {
@@ -62,16 +60,3 @@ class HomeController extends Controller
         ]);
     }
 }
-// public function index(): Response
-// {
-//     return response()->view('upload.index', [
-//         'uploads' => Upload::orderBy('updated_at', 'desc')->get(),
-//     ]);
-// }
-
-// public function index(): Response
-// {
-//     return response()->view('drone.index', [
-//         'drones' => Drone::orderBy('updated_at', 'desc')->get(),
-//     ]);
-// }

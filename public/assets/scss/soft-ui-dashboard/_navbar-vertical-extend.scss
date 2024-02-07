@@ -222,15 +222,6 @@
   height: $sidenav-header-width;
 }
 
-.sidenav-footer {
-  .card {
-    &.card-background {
-      &:after {
-        opacity: $sidenav-card-opacity;
-      }
-    }
-  }
-}
 // Sidenav states
 
 .g-sidenav-show {

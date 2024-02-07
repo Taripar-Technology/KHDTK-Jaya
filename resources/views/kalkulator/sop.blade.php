@@ -23,7 +23,7 @@ $ubahDate1 = date('d-m-Y', strtotime($date1 . ' + 1 days'))
                 <th scope="col" class="py-3 px-6">Item</th>
                 <th scope="col" class="py-3 px-5 status-column">Status</th>
 
-                <th scope="col" class="py-3 px-5 status-column">Hasil</th>
+               
             </tr>
         </thead>
 

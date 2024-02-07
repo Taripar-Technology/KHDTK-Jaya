@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 1,
                 'role' => 'admin',
-                'name' => 'admin_taripar',
+                'name' => 'admin',
                 'password' => Hash::make('secret'),
                 'created_at' => now(),
                 'updated_at' => now()

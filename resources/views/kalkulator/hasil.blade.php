@@ -67,19 +67,21 @@
                                     </td>
 
                                     <td class="text-center horizontal-icons">
-                                            <a href="{{ url('detail/' . $kalkulator->id . '?komoditas=' . $kalkulator->komoditas) }}" class="icon-link" data-bs-toggle="tooltip" data-bs-original-title="View Detail">
-                                                <i class="fas fa-user-edit text-bold"></i>
-                                            </a>
-                                            <a href="{{ url('sop/' . $kalkulator->id . '?komoditas=' . $kalkulator->komoditas) }}" class="icon-link" data-bs-toggle="tooltip" data-bs-original-title="View SOP">
+                                        <a href="{{ url('detail/' . $kalkulator->id . '?komoditas=' . $kalkulator->komoditas) }}" class="icon-link" data-bs-toggle="tooltip" data-bs-original-title="View Detail">
+                                            <i class="fas fa-eye text-bold"></i>
+                                        </a>
 
-                                                <i class="fas fa-user-edit text-bold"></i>
-                                            </a>
+                                        <a href="{{ url('sop/' . $kalkulator->id . '?komoditas=' . $kalkulator->komoditas) }}" class="icon-link" data-bs-toggle="tooltip" data-bs-original-title="View SOP">
+                                            <i class="fas fa-tasks text-bold"></i>
+                                        </a>
+
                                         <form action="{{ route('kalkulators.destroy', $kalkulator->id) }}" method="POST" class="icon-link">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="cursor-pointer fas fa-trash text-bold">
+                                            <button type="submit" class="cursor-pointer fas fa-trash text-bold" style="border: none; background: none;">
                                             </button>
                                         </form>
+
                                     </td>
                                 </tr>
                                 @empty

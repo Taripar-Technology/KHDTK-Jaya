@@ -14,6 +14,7 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\DroneController;
 use App\Http\Controllers\CabaiController;
 use App\Http\Controllers\hasilAdminController;
+use App\Http\Controllers\SensorAdminController;
 use App\Http\Controllers\SopController;
 use App\Http\Controllers\StatusController;
 
@@ -187,8 +188,10 @@ Route::get('hasil', function () {
 
 Route::get('/beranda', [HomeController::class, 'home'])->name('beranda');
 Route::get('/admin', [adminController::class, 'index'])->name('admin')->middleware('role:admin');
-Route::get('/sensor', [SensorController::class, 'LineChart']);
-Route::post('/sensors/add-table', [SensorController::class, 'addNewSensorTable']);
+
+Route::resource('sensor', SensorController::class);
+Route::get('/sensor-admin', [SensorAdminController::class, 'index']);
+
 
 //Upload Gambar lahan
 Route::middleware(['auth'])->group(function () {

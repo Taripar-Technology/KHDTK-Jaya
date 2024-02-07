@@ -4,135 +4,111 @@
 
 @section('content')
     <style>
-        .sensor-status-container {
+        .chart-container {
             display: flex;
-            justify-content: space-between;
             flex-wrap: wrap;
-            /* Ini akan memungkinkan kartu untuk bungkus jika tidak cukup ruang */
-            margin-bottom: 20px;
+            justify-content: center;
+            /* Ini akan memusatkan chart pada container */
         }
 
-        @media (max-width: 768px) {
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 5px;
+            /* Menjaga jarak antar card */
+            padding: 20px;
+            box-sizing: border-box;
+            flex: 0 0 calc(50% - 10px);
+            /* Mengatur lebar card agar dua card muat dalam satu baris */
+        }
 
-            /* Adjust this value as needed for your responsive breakpoint */
-            .sensor-status-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                /* Center the cards */
+        .chart {
+            height: 400px;
+            /* Tinggi chart */
+        }
+
+        /* Pastikan pada layar kecil, setiap card mengambil penuh baris */
+        @media (max-width: 767px) {
+            .chart-container::after {
+                content: none;
+                /* Hapus pseudo-element */
             }
 
-            .sensor-status-card {
-                max-width: 600px;
-                /* Adjust this to match the charts' width */
-                width: 100%;
-                box-sizing: border-box;
-                margin: 0 auto 20px;
-                /* Center the card and add space below */
-            }
-
-            .chart-row {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                /* Center the charts */
-            }
-
-            .chart {
-                width: 100%;
-                /* Full width for the chart */
-                max-width: 600px;
-                /* Match the max-width of the sensor-status-card */
-                margin-bottom: 20px;
-                /* Space between the charts */
+            .card {
+                flex: 0 0 100%;
+                /* Pada layar kecil, card mengambil penuh baris */
+                max-width: 100%;
+                /* Mengatur lebar maksimum card */
             }
         }
 
-        .sensor-status-card {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            transition: 0.3s;
-            width: calc(50% - 10px);
-            /* Mengatur lebar untuk menjadi setengah dari container dikurangi margin */
-            border-radius: 5px;
-            padding: 16px;
-            background-color: #fff;
-            text-align: left;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            min-height: 100px;
-            /* Menetapkan ketinggian minimal */
-            display: flex;
-            /* Menambahkan flex untuk menyelaraskan judul dan isi */
-            flex-direction: column;
-            /* Menyusun judul dan isi secara vertikal */
+        .sensor-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .sensor-status-card h4 {
-            margin-bottom: auto;
-            /* Mendorong isi ke bawah jika tidak ada daftar item */
-            text-align: center;
-            /* Menyelaraskan teks ke tengah */
-        }
-
-        .sensor-status-list {
-            display: grid;
-            flex-direction: column;
-            justify-content: start;
-            grid-template-columns: repeat(2, 1fr);
-            /* Create two columns */
-            grid-gap: 8px;
-            /* Space between items */
-            list-style-type: none;
-            padding-left: 0;
-            margin-top: 0;
-        }
-
-        .sensor-status-list li {
-            padding: 8px 16px;
-            background-color: #f2f2f2;
+        .sensor-list li {
+            display: inline-block;
+            /* Elemen akan seukuran konten */
+            padding: 5px 10px;
+            /* Tambahkan padding di sekitar teks */
+            margin-bottom: 10px;
             border-radius: 4px;
-            font-size: 14px;
-            color: #333;
-            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: white;
         }
 
-        .sensor-status-list li.dead {
-            background-color: #ffcdd2;
+        .sensor-list li.active {
+            background: #28a745;
+            /* Warna hijau untuk sensor aktif */
         }
 
-        .sensor-status-list li.alive {
-            background-color: #c8e6c9;
+        .sensor-list li.inactive {
+            background: #dc3545;
+            /* Warna merah untuk sensor tidak aktif */
+        }
+
+        /* Hapus margin bawah untuk item list terakhir */
+        .sensor-list li:last-child {
+            margin-bottom: 0;
         }
     </style>
 
-    <div class="container">
-        <h2 class="text-center">Status Sensor</h2>
-        <div class="sensor-status-container">
-            <div class="sensor-status-card">
-                <h4>Sensor Aktif</h4>
-                <ul class="sensor-status-list">
-                    @foreach ($sensorStatus as $sensorName => $status)
-                        @if ($status === 'Aktif')
-                            <li class="alive">{{ $sensorName }}</li>
-                        @endif
-                    @endforeach
-                </ul>
-            </div>
-            <div class="sensor-status-card">
-                <h4>Sensor Tidak Aktif</h4>
-                <ul class="sensor-status-list">
-                    @foreach ($sensorStatus as $sensorName => $status)
-                        @if ($status === 'Tidak Aktif')
-                            <li class="dead">{{ $sensorName }}</li>
-                        @endif
-                    @endforeach
-                </ul>
-            </div>
-        </div>
+<h2 class="text-center">Status Sensor</h2>
+<div class="chart-container">
+    <!-- Card untuk sensor aktif -->
+    <div class="card">
+        <h3 class="text-center">Sensor Aktif</h3>
+        <ul class="sensor-list">
+            @foreach ($sensorStatus as $sensor_id => $status)
+                @if ($status == 'active')
+                    <li class="active">
+                        Sensor {{ $sensor_id }}
+                    </li>
+                @endif
+            @endforeach
+        </ul>
     </div>
+    
+    <!-- Card untuk sensor tidak aktif -->
+    <div class="card">
+        <h3 class="text-center">Sensor Tidak Aktif</h3>
+        <ul class="sensor-list">
+            @foreach ($sensorStatus as $sensor_id => $status)
+                @if ($status == 'inactive')
+                    <li class="inactive">
+                        Sensor {{ $sensor_id }}
+                    </li>
+                @endif
+            @endforeach
+        </ul>
+    </div>
+</div>
 
 
-<div class="container">
+<div class="container mt-5">
     <div class="mapdiv"
     style="background-image: url('{{ asset('assets/img/lahan.jpg') }}'); background-repeat:no-repeat;background-size:contain;width:100%">
 
@@ -541,27 +517,6 @@ Penanaman 1 September 2023" target="_blank">
     </div>
     <!-- Drone-->
 
-        <a xlink:title="Kentang Luas 0.04 Ha Penanaman 1 September 2023" target="_blank">
-            Kubis
-            <path d="M320.93714,245.08369L337.98017,242.44322L343.26111,261.64665L326.45812,266.68754L324.29774,265.00724L322.37739,258.28605
-            L321.17718,247.48412L320.93714,245.08369z" id="LKA2449" name="Mātale">
-            </path>
-        </a>
-
-        <a xlink:title="Demplot Luas 0.04 Ha Penanaman 13 September 2023" target="_blank">
-            Kubis
-            <path d="M320.93714,245.08369L337.98017,242.44322L343.26111,261.64665L326.45812,266.68754L324.29774,265.00724L322.37739,258.28605
-            L321.17718,247.48412L320.93714,245.08369z" id="LKA2449" name="Mātale" style="fill:pink;">
-            </path>
-        </a>
-
-        <a xlink:title="Kentang Luas 0.04 Ha Penanaman 1 September 2023" target="_blank">
-            Kubis
-            <path d="M418.15445,443.59908L416.47415,441.67874
-            L399.9112,414.31386L409.99299,403.03185L421.03496,440.23848L418.15445,443.59908z" id="LKA2449"
-                name="Mātale" style="fill:yellow;">
-            </path>
-        </a>
         <circle cx="302.6" cy="1147.4" id="0">
         </circle>
         <circle cx="616.8" cy="745.3" id="1">
