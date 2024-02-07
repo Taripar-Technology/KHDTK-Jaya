@@ -191,6 +191,12 @@ Route::get('/admin', [adminController::class, 'index'])->name('admin')->middlewa
 
 Route::resource('sensor', SensorController::class);
 Route::get('/sensor-admin', [SensorAdminController::class, 'index']);
+// Tambahkan route ini di web.php
+Route::get('/sensor/{id}', [App\Http\Controllers\SensorController::class, 'show'])->name('sensor.show');
+
+Route::get('/sensor-admin/{user}', [SensorAdminController::class, 'show'])->name('sensor-admin.show');
+
+
 
 
 //Upload Gambar lahan

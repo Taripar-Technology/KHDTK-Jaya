@@ -50,13 +50,23 @@ class HomeController extends Controller
             $sensorStatus[$sensor_id] = $lastUpdateTime->diffInHours($currentTime) <= 3 ? 'active' : 'inactive';
         }
 
+        $actives = [];
+        $inactives = [];
+        $pos = 1;
+
+        foreach ($sensorStatus as $status) {
+            if ($status === 'active') {
+                $actives[] = $pos; // Use shorthand array push syntax
+            } else {
+                $inactives[] = $pos;
+            }
+            $pos++;
+        }
+
         if (auth()->user()->role === 'admin') {
             return redirect()->route('admin');
         }
 
-        return view('beranda', [
-            'sensorStatus' => $sensorStatus,
-            // 'drones' => $drones,
-        ]);
+    return view('beranda', compact('actives', 'inactives'));
     }
 }

@@ -18,25 +18,36 @@ class SensorController extends Controller
         $currentTime = Carbon::now();
 
         $latestEntries = SensorLog::select('sensor_id', DB::raw('MAX(updated_at) as last_update'))
-        ->whereHas('sensor', function ($query) {
-            $query->where('user_id', Auth::id());
-        })
-        ->groupBy('sensor_id')
-        ->get()
-        ->keyBy('sensor_id');
-
+            ->whereHas('sensor', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->groupBy('sensor_id')
+            ->get()
+            ->keyBy('sensor_id');
 
         $sensors = SensorLog::whereHas('sensor', function ($query) {
             $query->where('user_id', Auth::id());
         })
-        ->orderBy('created_at', 'asc')
-        ->get();
+            ->orderBy('created_at', 'asc')
+            ->get();
 
         $sensorStatus = [];
 
         foreach ($latestEntries as $sensor_id => $entry) {
             $lastUpdateTime = Carbon::parse($entry->last_update);
             $sensorStatus[$sensor_id] = $lastUpdateTime->diffInHours($currentTime) <= 3 ? 'active' : 'inactive';
+        }
+        $actives = [];
+        $inactives = [];
+        $pos = 1;
+
+        foreach ($sensorStatus as $status) {
+            if ($status === 'active') {
+                $actives[] = $pos; // Use shorthand array push syntax
+            } else {
+                $inactives[] = $pos;
+            }
+            $pos++;
         }
 
         $chartData = [];
@@ -51,6 +62,11 @@ class SensorController extends Controller
             $chartData['created_at'][$sensor->sensor_id][] = strtotime($sensor->created_at) * 1000;
         }
 
+        $sensorNames = []; // Array untuk menyimpan urutan nama sensor
+        foreach ($latestEntries as $sensor_id => $entry) {
+            $sensorNames[$sensor_id] = 'Sensor ' . count($sensorNames) + 1;
+        }
+
         $seriesData = [];
         foreach ($chartData as $param => $sensorData) {
             if ($param !== 'created_at') {
@@ -60,22 +76,32 @@ class SensorController extends Controller
                         $timestamp = $chartData['created_at'][$id][$index];
                         $dataPoints[] = [$timestamp, $value];
                     }
+                    // Gunakan nama dari array $sensorNames
                     $seriesData[$param][] = [
-                        'name' => 'Sensor ' . $id,
+                        'name' => $sensorNames[$id],
                         'data' => $dataPoints,
                     ];
                 }
             }
         }
 
-        return view('sensor.index', compact('seriesData', 'sensorStatus'));
+        return view('sensor.index', compact('seriesData', 'actives', 'inactives'));
     }
 
     public function store(Request $request)
     {
         Sensor::create([
-            'user_id' => Auth::id()
+            'user_id' => Auth::id(),
         ]);
         return redirect('/sensor');
+    }
+    public function show($id)
+    {
+        // Dapatkan sensor berdasarkan id
+        $sensor = Sensor::with('sensorLogs')->findOrFail($id);
+
+        // Kembali ke view dengan data sensor
+        // Asumsi Anda memiliki view 'sensor.show' yang dibuat untuk menampilkan detail sensor
+        return view('sensor.show', compact('sensor'));
     }
 }

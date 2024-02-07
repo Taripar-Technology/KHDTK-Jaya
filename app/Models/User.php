@@ -45,5 +45,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // User model
+public function sensors()
+{
+    return $this->hasMany(Sensor::class);
+}
+
     
 }

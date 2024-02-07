@@ -20,56 +20,35 @@
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
                                 <thead>
-                                    <h5 class="mb-1">
-
-                                    </h5>
                                     <tr>
-                                        <th class="text-chamelcase text-bold text-xl-start font-weight-bolder opacity-7">
+                                        <th class="text-chamelcase text-bold font-weight-bolder text-start px-1">
                                             No
                                         </th>
-                                        <th
-                                            class="text-center text-chamelcase text-bold text-xl-start font-weight-bolder opacity-7">
+                                        <th class="text-chamelcase text-bold font-weight-bolder text-center">
                                             User
                                         </th>
-                                        <th
-                                            class="text-center text-chamelcase text-bold text-xl-start font-weight-bolder opacity-7">
+                                        <th class="text-chamelcase text-bold font-weight-bolder text-center">
                                             Action
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($sensor_admin as $row => $sensor)
+                                    @forelse ($users_with_sensors as $user)
                                         <tr>
-                                            <td class="ps-4">
-                                                {{ $row + 1 }}
-                                            </td>
+                                            <td class="text-start">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $user->name }}</td>
                                             <td class="text-center">
-                                                {{ $sensor->user ? $sensor->user->name : 'Tidak diketahui' }}
-
-                                            </td>
-                                            <td class="text-center horizontal-icons">
-                                                <a href="{{ url('detail/' . $sensor->id . '?komoditas=' . $sensor->komoditas) }}"
-                                                    class="icon-link" data-bs-toggle="tooltip"
-                                                    data-bs-original-title="View Detail">
+                                                <a href="{{ route('sensor-admin.show', $user->id) }}" class="icon-link"
+                                                    data-bs-toggle="tooltip" data-bs-original-title="View Detail">
                                                     <i class="fas fa-eye text-bold"></i>
                                                 </a>
-
-                                                <form action="{{ route('sensor_admin.destroy', $sensor->id) }}"
-                                                    method="POST" class="icon-link">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="cursor-pointer fas fa-trash text-bold"
-                                                        style="border: none; background: none;">
-                                                    </button>
-                                                </form>
-
                                             </td>
                                         </tr>
+                                    @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Belum ada Sensor</td>
+                                            <td colspan="3" class="text-center">Belum ada Sensor</td>
                                         </tr>
-                                    @endforeach
-
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -81,7 +60,7 @@
     {{-- Tempatkan pagination di bawah tabel --}}
     <div class="pagination-container">
         {{-- Pagination links --}}
-        {{ $sensor_admin->links() }}
+        {{ $users_with_sensors->links() }}
     </div>
 
     <style>

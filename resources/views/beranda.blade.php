@@ -76,18 +76,18 @@
         }
     </style>
 
+
 <h2 class="text-center">Status Sensor</h2>
+
 <div class="chart-container">
     <!-- Card untuk sensor aktif -->
     <div class="card">
         <h3 class="text-center">Sensor Aktif</h3>
         <ul class="sensor-list">
-            @foreach ($sensorStatus as $sensor_id => $status)
-                @if ($status == 'active')
-                    <li class="active">
-                        Sensor {{ $sensor_id }}
-                    </li>
-                @endif
+            @foreach ($actives as $serial)
+                <li class="active">
+                    Sensor {{ $serial }}
+                </li>
             @endforeach
         </ul>
     </div>
@@ -96,12 +96,10 @@
     <div class="card">
         <h3 class="text-center">Sensor Tidak Aktif</h3>
         <ul class="sensor-list">
-            @foreach ($sensorStatus as $sensor_id => $status)
-                @if ($status == 'inactive')
-                    <li class="inactive">
-                        Sensor {{ $sensor_id }}
-                    </li>
-                @endif
+            @foreach ($inactives as $serial)
+                <li class="inactive">
+                    Sensor {{ $serial }}
+                </li>
             @endforeach
         </ul>
     </div>
