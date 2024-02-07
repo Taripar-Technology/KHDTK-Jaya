@@ -525,4 +525,9 @@ Penanaman 1 September 2023" target="_blank">
 </div>
 </div>
 
+<div>
+    <h3>Gambar Peta</h3>
+    <img src="{{ asset('images\posts\gambar\Ksy8dqzjsMlfYuGxEzdQQG1IaSCRYgmAWkIeYc6M.png') }}" alt="Deskripsi Gambar">
+</div>
+
 @endsection
